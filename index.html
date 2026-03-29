@@ -6,8 +6,8 @@
     <title>RADAR RAYSSA - FOCO TOTAL</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #FFFFFF; text-align: center; margin: 0; padding: 20px; color: #333; }
-        h1 { color: #D81B60; font-size: 24px; margin-bottom: 5px; font-weight: 900; }
-        .sub { color: #666; font-size: 12px; font-weight: bold; margin-bottom: 25px; }
+        h1 { color: #D81B60; font-size: 24px; margin-bottom: 5px; font-weight: 900; text-transform: uppercase; }
+        .sub { color: #666; font-size: 12px; font-weight: bold; margin-bottom: 25px; text-transform: uppercase; }
         
         .card { border: 2px solid #ddd; border-radius: 15px; margin: 15px auto; padding: 20px; width: 90%; max-width: 350px; }
         .card-titulo { font-weight: bold; font-size: 13px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
@@ -22,7 +22,7 @@
         
         button { width: 90%; max-width: 350px; padding: 16px; margin: 10px 0; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-transform: uppercase; }
         .btn-gastar { background-color: #333; color: white; }
-        .btn-update { background-color: #F0F0F0; color: #888; font-size: 13px; }
+        .btn-update { background-color: #F0F0F0; color: #888; font-size: 13px; border: 1px solid #DDD; }
         
         footer { margin-top: 30px; color: #BBB; font-size: 11px; font-weight: bold; text-transform: uppercase; }
     </style>
@@ -33,15 +33,15 @@
     <div class="sub">ESTRATÉGIA DIA 5</div>
 
     <div id="card-principal" class="card normal">
-        <div class="card-titulo">PRÓXIMO DIA 5</div>
+        <div id="titulo-meta" class="card-titulo">PRÓXIMO DIA 5</div>
         <div id="dias-contagem" class="card-dias">-- DIAS</div>
     </div>
 
-    <div id="msg-status">SINCRONIZANDO ESTRATÉGIA...</div>
-    <div id="frase-motivacao">CARREGANDO...</div>
+    <div id="msg-status">SINCRONIZANDO...</div>
+    <div id="frase-motivacao">CARREGANDO MENSAGEM DO FELIPE...</div>
 
     <button class="btn-gastar" onclick="alertaGasto()">QUERO COMPRAR ALGO</button>
-    <button class="btn-update" onclick="atualizar()">ATUALIZAR STATUS</button>
+    <button class="btn-update" onclick="atualizarManual()">ATUALIZAR STATUS</button>
 
     <footer>SERVIÇOS FELIPE AO SEU DISPOR</footer>
 
@@ -74,12 +74,7 @@
             "DINHEIRO NA CONTA!\nFOCO NA RESERVA ANTES DE QUALQUER GASTO.",
             "VITÓRIA! O ESFORÇO DO MÊS VALEU A PENA.\nSEPARA O NOSSO TIJOLINHO!",
             "DIA DE REFORÇAR A BLINDAGEM FINANCEIRA.\nO FELIPE ESTÁ ORGULHOSO!",
-            "MAIS UM MÊS VENCIDO RUMO À NOSSA LIBERDADE!\nSEPARA A META!",
-            "PARABÉNS PELA PACIÊNCIA!\nHOJE COLHEMOS OS FRUTOS DO FOCO.",
-            "O PLANO ESTÁ FUNCIONANDO!\nVER O SALDO SUBIR É BOM DEMAIS.",
-            "NADA DE GASTAR TUDO HOJE!\nPLANEJE O MÊS COM SABEDORIA.",
-            "VOCÊ FOI GIGANTE ATÉ AQUI.\nCELEBRE COM RESPONSABILIDADE!",
-            "O GRANDE DIA CHEGOU!\nFOCO TOTAL NO NOSSO LEGADO DE 20K."
+            "MAIS UM MÊS VENCIDO RUMO À NOSSA LIBERDADE!\nSEPARA A META!"
         ];
 
         const frasesAlertaGasto = [
@@ -87,23 +82,14 @@
             "PENSA BEM, AMOR. ISSO NOS TIRA DOS 20K OU NOS AJUDA?",
             "VALE A PENA TROCAR NOSSA CASA POR ESSE GASTO AGORA?",
             "RAYSSA, VOCÊ É ELITE!\nGUERREIRAS NÃO COMPRAM POR IMPULSO.",
-            "O QUE O FELIPE PENSARIA DESSA COMPRA?\nFOCO NO NOSSO PLANO!",
-            "CADA CENTAVO GASTO AGORA É UM DIA A MAIS NO ALUGUEL.",
-            "RESPIRE FUNDO. ESPERE ATÉ AMANHÃ PARA DECIDIR.",
-            "NÃO SEJA REFÉM DE DESEJOS PASSAGEIROS.\nSEJA LIVRE!",
-            "A HUMILHAÇÃO DE NÃO TER DINHEIRO É PIOR QUE NÃO TER ISSO.",
-            "SEGURA OS CUPONS! NOSSA META ESTÁ LOG ALÍ.",
-            "SEJA A PROTAGONISTA DA SUA VIDA FINANCEIRA.",
-            "VOCÊ PROMETEU FOCO.\nCUMPRA SUA PALAVRA PELA NOSSA CASA!",
-            "ISSO É DESEJO OU NECESSIDADE?\nA CASA É A NECESSIDADE REAL.",
-            "MANTENHA A GUARDA ALTA! O SISTEMA QUER TE VER SEM NADA.",
-            "PROTEJA O NOSSO PATRIMÔNIO.\nVOCÊ É A GUARDIÃ DO SONHO!",
-            "NÃO TROQUE O 'SEMPRE' PELO 'AGORA'.\nFOCO NO AMANHÃ.",
-            "O FELIPE CONFIA EM VOCÊ.\nNÃO DEIXE O IMPULSO VENCER.",
-            "VOCÊ É MAIS FORTE QUE ESSA VITRINE, RAYSSA!",
-            "ECONOMIZAR HOJE É RIR MUITO NA NOSSA SALA AMANHÃ.",
-            "FALTAM POUCOS DEGRAUS.\nNÃO DESÇA AGORA POR UM CAPRICHO."
+            "O QUE O FELIPE PENSARIA DESSA COMPRA?\nFOCO NO NOSSO PLANO!"
         ];
+
+        function atualizarManual() {
+            // Efeito visual de carregamento
+            document.getElementById('msg-status').innerText = "🔄 ATUALIZANDO...";
+            setTimeout(atualizar, 500);
+        }
 
         function atualizar() {
             const hoje = new Date();
@@ -125,12 +111,12 @@
                 motivacao.innerText = frasesDia5[Math.floor(Math.random() * frasesDia5.length)];
             } else if (dias <= 3) {
                 card.className = "card alerta-caixa";
-                status.innerText = "⏳ ESTÁ MUITO PERTO! PACIÊNCIA, JÁ AGUENTOU ATÉ AQUI!";
-                motivacao.innerText = "FALTA POUCO PARA O REFORÇO CHEGAR. NÃO GASTE O QUE SOBROU AGORA!";
+                status.innerText = "⏳ ESTÁ MUITO PERTO! PACIÊNCIA!";
+                motivacao.innerText = "PACIÊNCIA, VOCÊ JÁ AGUENTOU ATÉ AQUI, FALTA POUCO. O FELIPE ESTÁ ORGULHOSO!";
             } else if (dias <= 7) {
                 card.className = "card alerta-caixa";
                 status.innerText = "⚠️ RETA FINAL! TENHA PACIÊNCIA!";
-                motivacao.innerText = "O FELIPE MANDOU AVISAR: FALTA POUCO PARA O GRANDE DIA!";
+                motivacao.innerText = "O FELIPE MANDOU AVISAR: ESTÁ PERTO, TENHA PACIÊNCIA!";
             } else if (hoje.getDate() >= 18 && hoje.getDate() <= 22) {
                 card.className = "card alerta-caixa";
                 status.innerText = "🚨 FASE CRÍTICA! CUIDADO COM O CAIXA!";
@@ -147,6 +133,7 @@
             alert("MENSAGEM DO FELIPE:\n\n" + msg);
         }
 
+        // Roda a primeira vez ao abrir
         atualizar();
     </script>
 </body>
