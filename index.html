@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RADAR RAYSSA - FOCO TOTAL</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #FFFFFF; text-align: center; margin: 0; padding: 20px; color: #333; }
+        h1 { color: #D81B60; font-size: 24px; margin-bottom: 5px; font-weight: 900; }
+        .sub { color: #666; font-size: 12px; font-weight: bold; margin-bottom: 25px; }
+        
+        .card { border: 2px solid #ddd; border-radius: 15px; margin: 15px auto; padding: 20px; width: 90%; max-width: 350px; }
+        .card-titulo { font-weight: bold; font-size: 13px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .card-dias { font-size: 38px; font-weight: bold; color: #000; }
+        
+        .normal { color: #2E7D32; border-color: #A5D6A7; background-color: #F1F8E9; }
+        .alerta-caixa { color: #D32F2F; border-color: #FFCDD2; background-color: #FFEBEE; }
+        .chegou { color: #FFFFFF; border-color: #FFD600; background-color: #D81B60; border: 3px solid #FFD600; }
+        
+        #msg-status { font-weight: 900; font-size: 15px; color: #D81B60; margin: 15px; min-height: 40px; text-transform: uppercase; }
+        #frase-motivacao { font-style: italic; font-weight: 800; font-size: 15px; margin: 20px; padding: 15px; background: #F5F5F5; border-radius: 10px; min-height: 80px; display: flex; align-items: center; justify-content: center; border-left: 5px solid #D81B60; text-transform: uppercase; }
+        
+        button { width: 90%; max-width: 350px; padding: 16px; margin: 10px 0; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; text-transform: uppercase; }
+        .btn-gastar { background-color: #333; color: white; }
+        .btn-update { background-color: #F0F0F0; color: #888; font-size: 13px; }
+        
+        footer { margin-top: 30px; color: #BBB; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <h1>RADAR RAYSSA</h1>
+    <div class="sub">ESTRATÉGIA DIA 5</div>
+
+    <div id="card-principal" class="card normal">
+        <div class="card-titulo">PRÓXIMO DIA 5</div>
+        <div id="dias-contagem" class="card-dias">-- DIAS</div>
+    </div>
+
+    <div id="msg-status">SINCRONIZANDO ESTRATÉGIA...</div>
+    <div id="frase-motivacao">CARREGANDO...</div>
+
+    <button class="btn-gastar" onclick="alertaGasto()">QUERO COMPRAR ALGO</button>
+    <button class="btn-update" onclick="atualizar()">ATUALIZAR STATUS</button>
+
+    <footer>SERVIÇOS FELIPE AO SEU DISPOR</footer>
+
+    <script>
+        const frasesGeral = [
+            "O FELIPE ESTÁ DE OLHO NO NOSSO FUTURO!\nGUARDA ESSE CUPOM, RAYSSA.",
+            "NOSSA CASA PRÓPRIA AGRADECE O SEU FOCO HOJE.",
+            "SER LIVRE FINANCEIRAMENTE É MELHOR QUE QUALQUER BLUSA NOVA.",
+            "VOCÊ É A PARCEIRA FIEL QUE TOPA QUALQUER PLANO.\nVAMOS PROS 20K!",
+            "CADA ECONOMIA AGORA É UM PASSO PRA FORA DO ALUGUEL.",
+            "RESILIÊNCIA, RAYSSA! O DIA 5 AINDA VAI BRILHAR MUITO.",
+            "A RAYSSA DO FUTURO VAI TER ORGULHO DESSA ECONOMIA.",
+            "DINHEIRO GUARDADO É PAZ DE ESPÍRITO PARA NÓS DOIS.",
+            "VOCÊ É A GUARDIÃ DO NOSSO SONHO.\nMANTENHA O FOCO!",
+            "O FELIPE ACREDITA NO SEU AUTOCONTROLE.\nVOCÊ É ELITE!",
+            "NÃO DEIXE O MARKETING VENCER.\nNOSSA CASA VALE MAIS.",
+            "FOCO NO LEGADO! SOMOS UM TIME IMBATÍVEL.",
+            "ECONOMIZAR É AMAR O NOSSO 'NÓS' DE AMANHÃ.",
+            "PACIÊNCIA É A CHAVE.\nO LUCRO VEM PARA QUEM SABE ESPERAR.",
+            "VOCÊ É FORTE E DECIDIDA.\nNÃO CAIA EM TENTAÇÕES BOBAS.",
+            "O SALDO CRESCENDO É A MELHOR PAISAGEM QUE EXISTE.",
+            "MANTENHA A GUARDA ALTA CONTRA OS GASTOS DESNECESSÁRIOS.",
+            "NOSSA META DE 20K É REAL E POSSÍVEL.\nBASTA FOCO!",
+            "SEGURANÇA FINANCEIRA É O MAIOR PRESENTE QUE PODEMOS NOS DAR.",
+            "VOCÊ É A RAINHA DO NOSSO PLANO.\nCONTINUE FIRME!"
+        ];
+
+        const frasesDia5 = [
+            "UHULL! DIA 5 CHEGOU!\nHORA DE SEPARAR A GRANA DA META PRIMEIRO!",
+            "DINHEIRO NA CONTA!\nFOCO NA RESERVA ANTES DE QUALQUER GASTO.",
+            "VITÓRIA! O ESFORÇO DO MÊS VALEU A PENA.\nSEPARA O NOSSO TIJOLINHO!",
+            "DIA DE REFORÇAR A BLINDAGEM FINANCEIRA.\nO FELIPE ESTÁ ORGULHOSO!",
+            "MAIS UM MÊS VENCIDO RUMO À NOSSA LIBERDADE!\nSEPARA A META!",
+            "PARABÉNS PELA PACIÊNCIA!\nHOJE COLHEMOS OS FRUTOS DO FOCO.",
+            "O PLANO ESTÁ FUNCIONANDO!\nVER O SALDO SUBIR É BOM DEMAIS.",
+            "NADA DE GASTAR TUDO HOJE!\nPLANEJE O MÊS COM SABEDORIA.",
+            "VOCÊ FOI GIGANTE ATÉ AQUI.\nCELEBRE COM RESPONSABILIDADE!",
+            "O GRANDE DIA CHEGOU!\nFOCO TOTAL NO NOSSO LEGADO DE 20K."
+        ];
+
+        const frasesAlertaGasto = [
+            "O FELIPE IA PERGUNTAR: 'ISSO É UMA EMERGÊNCIA REAL?'",
+            "PENSA BEM, AMOR. ISSO NOS TIRA DOS 20K OU NOS AJUDA?",
+            "VALE A PENA TROCAR NOSSA CASA POR ESSE GASTO AGORA?",
+            "RAYSSA, VOCÊ É ELITE!\nGUERREIRAS NÃO COMPRAM POR IMPULSO.",
+            "O QUE O FELIPE PENSARIA DESSA COMPRA?\nFOCO NO NOSSO PLANO!",
+            "CADA CENTAVO GASTO AGORA É UM DIA A MAIS NO ALUGUEL.",
+            "RESPIRE FUNDO. ESPERE ATÉ AMANHÃ PARA DECIDIR.",
+            "NÃO SEJA REFÉM DE DESEJOS PASSAGEIROS.\nSEJA LIVRE!",
+            "A HUMILHAÇÃO DE NÃO TER DINHEIRO É PIOR QUE NÃO TER ISSO.",
+            "SEGURA OS CUPONS! NOSSA META ESTÁ LOG ALÍ.",
+            "SEJA A PROTAGONISTA DA SUA VIDA FINANCEIRA.",
+            "VOCÊ PROMETEU FOCO.\nCUMPRA SUA PALAVRA PELA NOSSA CASA!",
+            "ISSO É DESEJO OU NECESSIDADE?\nA CASA É A NECESSIDADE REAL.",
+            "MANTENHA A GUARDA ALTA! O SISTEMA QUER TE VER SEM NADA.",
+            "PROTEJA O NOSSO PATRIMÔNIO.\nVOCÊ É A GUARDIÃ DO SONHO!",
+            "NÃO TROQUE O 'SEMPRE' PELO 'AGORA'.\nFOCO NO AMANHÃ.",
+            "O FELIPE CONFIA EM VOCÊ.\nNÃO DEIXE O IMPULSO VENCER.",
+            "VOCÊ É MAIS FORTE QUE ESSA VITRINE, RAYSSA!",
+            "ECONOMIZAR HOJE É RIR MUITO NA NOSSA SALA AMANHÃ.",
+            "FALTAM POUCOS DEGRAUS.\nNÃO DESÇA AGORA POR UM CAPRICHO."
+        ];
+
+        function atualizar() {
+            const hoje = new Date();
+            hoje.setHours(0,0,0,0);
+            
+            let alvo = new Date(hoje.getFullYear(), hoje.getMonth(), 5);
+            if (alvo <= hoje) alvo = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 5);
+            
+            const dias = Math.ceil((alvo - hoje) / 86400000);
+            const card = document.getElementById('card-principal');
+            const status = document.getElementById('msg-status');
+            const motivacao = document.getElementById('frase-motivacao');
+
+            document.getElementById('dias-contagem').innerText = (dias === 0 || hoje.getDate() === 5) ? "HOJE" : dias + " DIAS";
+
+            if (hoje.getDate() === 5) {
+                card.className = "card chegou";
+                status.innerText = "⭐ DIA DE VITÓRIA! SEPARA A GRANA! ⭐";
+                motivacao.innerText = frasesDia5[Math.floor(Math.random() * frasesDia5.length)];
+            } else if (dias <= 3) {
+                card.className = "card alerta-caixa";
+                status.innerText = "⏳ ESTÁ MUITO PERTO! PACIÊNCIA, JÁ AGUENTOU ATÉ AQUI!";
+                motivacao.innerText = "FALTA POUCO PARA O REFORÇO CHEGAR. NÃO GASTE O QUE SOBROU AGORA!";
+            } else if (dias <= 7) {
+                card.className = "card alerta-caixa";
+                status.innerText = "⚠️ RETA FINAL! TENHA PACIÊNCIA!";
+                motivacao.innerText = "O FELIPE MANDOU AVISAR: FALTA POUCO PARA O GRANDE DIA!";
+            } else if (hoje.getDate() >= 18 && hoje.getDate() <= 22) {
+                card.className = "card alerta-caixa";
+                status.innerText = "🚨 FASE CRÍTICA! CUIDADO COM O CAIXA!";
+                motivacao.innerText = "ESTAMOS NO MEIO DA MARATONA. SEGURA A ONDA PARA NÃO CHEGAR NO DIA 5 ZERADA!";
+            } else {
+                card.className = "card normal";
+                status.innerText = "🛡️ MODO BLINDADO ATIVO";
+                motivacao.innerText = frasesGeral[Math.floor(Math.random() * frasesGeral.length)];
+            }
+        }
+
+        function alertaGasto() {
+            const msg = frasesAlertaGasto[Math.floor(Math.random() * frasesAlertaGasto.length)];
+            alert("MENSAGEM DO FELIPE:\n\n" + msg);
+        }
+
+        atualizar();
+    </script>
+</body>
+</html>
